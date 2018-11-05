@@ -1,0 +1,21 @@
+{
+  "name": "Bamazon",
+  "version": "1.0.0",
+  "description": "Amazon-like storefront using MySQL and Sequelize skills learned. The web app takes in orders from customers and deplete stock from the store's inventory. The site also tracks product sales across the store's departments and then provides a summary of the highest-grossing departments in the store.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pamelaanderson/Bamazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pamelaanderson/Bamazon/issues"
+  },
+  "homepage": "https://github.com/Pamelaanderson/Bamazon#readme"
+}
