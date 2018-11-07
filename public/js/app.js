@@ -1,5 +1,6 @@
 $(function() {
 
+
     let cartTotal = 0;
     let cartItems = [];
 
@@ -13,15 +14,27 @@ $(function() {
 
         //appending each item to the sale-items #
         items.forEach(function(item) {
-            $('#sale-items').append(buildItemRow(item));
+            $('#sale-items').append(buildRow(item));
         });
     }
     //api call then call the render function
     // need to evoke the getITems func then restart our app
+    // tr adds the data to a new row
+
+    
     const getItems = function () {
         $.get('/api/products').then(render);
+        // console.log(getItems);
     }
-    const buildItemRow = function (item) {
+
+    // $.post("/api/products", function (response) {
+    //     console.log(response);
+    //     $(".modal").modal();
+    //     $(".modal-body").append(`<h1>${response.name}<h1>`);
+    //     console.log(response.photo);
+    //     $(".modal-image").append(`<img src = "${response.photo}"></img>`);
+    // });
+    const buildRow = function (item) {
         const tr = $('<tr>');
 
         const input = $('<input>').attr({
@@ -30,10 +43,11 @@ $(function() {
             id: item.id
         });
         const button = $('<button>')
-        .addClass('btn btn-warning add-to-cart')
+        .addClass('btn-warning-add-to-cart')
         .text('Add to Cart')
         .attr('data-id', item.id);
 
+        //appending each item to the div
         tr.append(
             $('<td>').append(input),
             $('<td>').text(item.product_name),
