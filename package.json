@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node ./seeds/seed-db.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/Pamelaanderson/Bamazon/issues"
   },
-  "homepage": "https://github.com/Pamelaanderson/Bamazon#readme"
+  "homepage": "https://github.com/Pamelaanderson/Bamazon#readme",
+  "dependencies": {
+    "config.json": "0.0.4",
+    "inquirer": "^6.2.0",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.3",
+    "seed": "^0.4.4",
+    "sequelize": "^4.41.0"
+  }
 }
