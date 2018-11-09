@@ -18,7 +18,7 @@ res.json({ error: error});
     });
 });
 //GET the products  with just the requested table at the referenced id
-app.get('/api/products/id', function(req, res) {
+app.get('/api/products/:id', function(req, res) {
 db.Product.find({ where: {id: req.params.id}})
 .then(function(data) {
     res.json(data);
@@ -29,6 +29,7 @@ db.Product.find({ where: {id: req.params.id}})
 //Update the id list
 //responds with success: true or false if successful
     app.put('/api/products/:id', function(req, res) {
+        console.log(req.params.id, "we are in update");
         db.Product.update(
             req.body,
             { where: { id: req.params.id } }

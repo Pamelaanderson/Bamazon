@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
 
     let cartTotal = 0;
@@ -7,34 +7,26 @@ $(function() {
     // setting a timer for the message to display for a set amount of time
     let timerInterval;
 
-// items included in params
+    // items included in params
     const render = function (items) {
         $('modal').modal('hide');
         $('#sale-items').empty();
 
         //appending each item to the sale-items #
-        items.forEach(function(item) {
-            $('#sale-items').append(buildRow(item));
+        items.forEach(function (item) {
+            $('#sale-items').append(buildItemRow(item));
         });
     }
     //api call then call the render function
     // need to evoke the getITems func then restart our app
     // tr adds the data to a new row
 
-    
+
     const getItems = function () {
         $.get('/api/products').then(render);
-        // console.log(getItems);
-    }
 
-    // $.post("/api/products", function (response) {
-    //     console.log(response);
-    //     $(".modal").modal();
-    //     $(".modal-body").append(`<h1>${response.name}<h1>`);
-    //     console.log(response.photo);
-    //     $(".modal-image").append(`<img src = "${response.photo}"></img>`);
-    // });
-    const buildRow = function (item) {
+    }
+    const buildItemRow = function (item) {
         const tr = $('<tr>');
 
         const input = $('<input>').attr({
@@ -43,9 +35,9 @@ $(function() {
             id: item.id
         });
         const button = $('<button>')
-        .addClass('btn-warning-add-to-cart')
-        .text('Add to Cart')
-        .attr('data-id', item.id);
+            .addClass('btn btn-warning add-to-cart')
+            .text('Add to Cart')
+            .attr('data-id', item.id);
 
         //appending each item to the div
         tr.append(
@@ -81,49 +73,78 @@ $(function() {
 
     const message = function (type, text) {
         $('#messages')
-        .addClass(`alert alert-${type}`)
-        .text(text);
+            .addClass(`alert alert-${type}`)
+            .text(text);
 
         // shows message for set time
         timerInterval = setTimeout(clearMessages, 5000);
     }
     // clear messages when items added to cart
     const clearMessages = function () {
-    $('#messages').empty().removeClass();
+        $('#messages').empty().removeClass();
     }
 
     // id to variable and make api call
-const addItemToCart = function () {
+    const addItemToCart = function () {
 
-    clearMessages();
-    const id = $(this).attr('data-id');
+        clearMessages();
+        const id = $(this).attr('data-id');
 
-    // running the update cart func
-    $.get(`/api/products/${id}`).then(updateCart);
-}
-const updateCart = function (data) {
-    const numRequested = $(`#${data.id}`).val();
-
-    // comparison to check quantity and if not enough then message
-    if ( numRequested > data.stock_quantity ) {
-        message('danger', `We're sorry. We only have ${data.stock_quantity} in stock`);
-    } else {
-        addCartRow(numRequested, data);
-        message('success', 'Items successfully added to cart!');
-        $(`#${data.id}`).val('');
+        // running the update cart func
+        $.get(`/api/products/${id}`).then(updateCart);
     }
-}
- 
+    const updateCart = function (data) {
+        const numRequested = $(`#${data.id}`).val();
 
-const checkout = function () {
-    cartItems.forEach(function(item) {
-        $.ajax({
-            method: 'PUT',
-            url: `/api/products/${item.id}`,
-            data: item
-        });
-    });
-}
+        // comparison to check quantity and if not enough then message
+        if (numRequested > data.stock_quantity) {
+            message('danger', `We're sorry. We only have ${data.stock_quantity} in stock`);
+        } else {
+            addCartRow(numRequested, data);
+            message('success', 'Items successfully added to cart!');
+            $(`#${data.id}`).val('');
+        }
+    }
+
+
+    const checkout = function () {
+        calculateTotal();
+
+        // cartItems.forEach(function(item) {
+        //     $.ajax({
+        //         method: 'PUT',
+        //         url: `/api/products/${item.id}`,
+        //         data: item
+        //     });
+        // });
+
+        const index = cartItems.length - 1;
+
+        updateItem(index)
+    }
+
+    function updateItem(i) {
+        if (i >= 0) {
+
+            $.ajax({
+                method: 'PUT',
+                url: `/api/products/${cartItems[i].id}`,
+                data: cartItems[i]
+            }).then(function (data) {
+                console.log(i, "this is the index");
+                index = index - 1;
+                updateItem(index);
+            })
+        }
+    }
+
+    function calculateTotal() {
+        let total = 0;
+        cartItems.forEach(e => {
+            total += e.price
+        })
+        $('.cart-total').text(total);
+    }
 
     getItems();
 
